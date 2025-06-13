@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=350, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <title>¡Juega Plinko y Gana tu Bono!</title>
+  <title>¡Juega Plinko y gana tu bono!</title>
   <meta name="description" content="¡Juega Plinko gratis y consigue tu bono exclusivo en México! Participa, gana y recoge tu premio especial para nuevos usuarios.">
   <link rel="preload" as="image" href="preland-mx.webp" type="image/webp">
   <style>
@@ -20,8 +20,8 @@
     }
     .overlay {
       position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;
-      background: rgba(35,42,40,0.18);
-      backdrop-filter: blur(1.6px);
+      background: rgba(25,32,29,0.29); /* Сделал overlay темнее! */
+      backdrop-filter: blur(2px);
     }
     #game { 
       max-width: 355px; 
@@ -37,16 +37,27 @@
       font-weight:900;
       text-align:center;
       color:#fff;
-      text-shadow: 0 0 8px #222, 0 2px 12px #168b39, 0 0 2px #000;
+      text-shadow: 0 0 8px #222, 0 2px 16px #168b39, 0 0 4px #000;
       letter-spacing: 1px;
     }
     #counter, #score {
       color: #fff; font-weight: bold;
-      text-shadow: 0 0 6px #2e301e, 0 2px 14px #222, 0 0 2px #000;
-      font-size: 1.18em;
+      text-shadow: 0 0 8px #27251a, 0 2px 14px #222, 0 0 2px #000;
+      font-size: 1.19em;
       margin-bottom: 8px;
     }
     #counter {font-size: 1.13em; margin-bottom: 8px;}
+    #max-balls-tip {
+      font-size: 0.99em;
+      color: #FFD24E;
+      text-shadow: 0 1px 8px #222;
+      font-weight: normal;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    @media (max-width:420px) {
+      #max-balls-tip {font-size: 1.1em;}
+    }
     #score { font-size: 1.19em; margin-bottom: 10px; letter-spacing: 1px;}
     .board-wrap {
       position:relative;
@@ -55,7 +66,7 @@
     }
     #board-bg {
       position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-      background: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.34);
       border-radius: 22px; z-index: 1; pointer-events: none;
       box-shadow: 0 3px 25px #fff7, 0 0 0 #fff;
     }
@@ -94,42 +105,42 @@
       background: radial-gradient(circle, #FFD24E 14%, #19BE6B 32%, transparent 90%);
     }
     #start-btn {
-      width: 96%; margin: 15px auto 0 auto; display: block; font-size: 1.23em;
-      padding: 19px 0; border: 4px solid #fff;
-      border-radius: 26px;
-      background: linear-gradient(90deg, #1cd651 0%, #FFD24E 100%);
-      color: #03591a; font-weight: bold;
-      box-shadow: 0 0 32px #ffd24e, 0 0 12px #3cd4a3;
-      text-shadow: 0 0 7px #fff9,0 0 8px #fff7, 0 0 2px #000;
+      width: 98%; margin: 18px auto 0 auto; display: block; font-size: 1.28em;
+      padding: 21px 0; border: 5px solid #fff;
+      border-radius: 28px;
+      background: linear-gradient(90deg, #0ea346 0%, #FFD24E 100%);
+      color: #08571d; font-weight: bold;
+      box-shadow: 0 0 38px #ffd24e, 0 0 22px #168b39, 0 0 8px #222;
+      text-shadow: 0 0 14px #fff,0 0 14px #fff, 0 0 4px #168b39;
       position: relative; cursor:pointer;
       transition: background .15s, box-shadow .16s, transform .09s;
-      animation: pulsebtn 1.2s infinite alternate;
+      animation: pulsebtn 1.1s infinite alternate;
       outline: none;
       z-index: 5;
     }
-    #start-btn:active { background: #ffd24e; color: #107d31; box-shadow: 0 0 42px #fff6; transform: scale(1.08);}
+    #start-btn:active { background: #ffd24e; color: #107d31; box-shadow: 0 0 52px #fff6; transform: scale(1.06);}
     @keyframes pulsebtn {
-      0% {box-shadow: 0 0 12px #ffd24e, 0 0 0 #fff;}
-      100% {box-shadow: 0 0 36px #19be6b, 0 0 20px #fff6;}
+      0% {box-shadow: 0 0 22px #ffd24e, 0 0 0 #fff;}
+      100% {box-shadow: 0 0 48px #19be6b, 0 0 25px #fff6;}
     }
     #tip {
       margin: 18px auto 0 auto;
-      background: rgba(255,255,255,0.91);
-      color: #1b522e;
+      background: rgba(0,0,0,0.64);
+      color: #FFD24E;
       font-size: 1.09em;
       border-radius: 14px;
-      box-shadow: 0 2px 10px #fff4, 0 0 1px #168b39;
+      box-shadow: 0 2px 10px #fff4, 0 0 2px #168b39;
       padding: 10px 9px 8px 9px;
       width: 90%;
       text-align: center;
       font-weight: bold;
       letter-spacing: 0.2px;
-      text-shadow: 0 2px 8px #fff,0 0 1px #fff;
+      text-shadow: 0 2px 10px #000,0 0 2px #fff;
     }
     /* Modal styles */
     #modal-bg {
       display:none; position: fixed; left:0; top:0; width:100vw; height:100vh; z-index:100;
-      background: rgba(0,0,0,0.63); justify-content: center; align-items: center;
+      background: rgba(0,0,0,0.67); justify-content: center; align-items: center;
     }
     #modal-content {
       background:#17223b; padding:24px 10px 18px 10px; border-radius:18px;
@@ -163,6 +174,7 @@
       cursor:pointer;transition:background 0.18s;
       margin-bottom:3vw;
       letter-spacing: 1px;
+      text-shadow: 0 1px 5px #168b39, 0 0 8px #fff;
     }
     #collect-btn:active { background: #007d36;}
     #important-warning {
@@ -188,7 +200,7 @@
     @media (max-width: 450px) {
       #game, .board-wrap { max-width:99vw; }
       #score {font-size:1.09em;}
-      #tip {font-size:1.05em;}
+      #tip {font-size:1.11em;}
     }
     [tabindex]:focus, button:focus {outline:2px solid #19be6b;}
   </style>
@@ -196,14 +208,11 @@
 <body>
   <div class="overlay" aria-hidden="true"></div>
   <div id="game" aria-label="Juego Plinko">
-    <h1>Juega Plinko y Gana un Bono</h1>
+    <h1>¡Juega Plinko y gana tu bono!</h1>
     <div id="counter" aria-live="polite">
-  Bolas restantes: <span id="balls">10</span>
-  <span id="max-balls-tip" style="font-size:0.92em;color:#FFD24E;text-shadow:0 1px 6px #222;font-weight:normal;margin-left:8px;">
-    (máx. <b>5</b> al mismo tiempo)
-  </span>
-</div>
-
+      Bolas restantes: <span id="balls">10</span>
+      <span id="max-balls-tip">(máx. <b>5</b> al mismo tiempo)</span>
+    </div>
     <div id="score"><b>¡Tu bono te está esperando!</b></div>
     <div class="board-wrap">
       <div id="board-bg"></div>
@@ -215,19 +224,20 @@
   <!-- Модалка с бонусом -->
   <div id="modal-bg" role="dialog" aria-modal="true" aria-label="Gana tu bono">
     <div id="modal-content">
-      <div id="promo">PROMOCODE: <b>FIEE</b></div>
+      <div id="promo">¡CÓDIGO: <b>FIEE</b>!</div>
       <div style="font-size:1.18em;margin-bottom:13px;">
         ¡Tu ganancia está lista! <span style="color:#FFD24E;animation:flash 0.85s infinite alternate;">🎉</span>
       </div>
       <div id="timer"></div>
       <ul style="padding-left:18px;text-align:left;margin:12px auto 10px auto;max-width:320px;">
         <li><b>+500% bono</b> en tus primeros 4 depósitos</li>
-        <li><b>Hasta 30% cashback</b></li>
-        <li><b>Expresa (5+ eventos):</b> bono extra a tu ganancia</li>
+        <li><b>Hasta 30% de reembolso</b></li>
+        <li><b>Apuestas combinadas (5+ eventos):</b> bono extra sobre tus ganancias</li>
       </ul>
       <button id="collect-btn" aria-label="Reclamar bono">¡Reclamar bono!</button>
-      <div id="important-warning">⚠️ <b>¡Importante!</b> El bono <b>NO se acreditará</b> si no ingresas el código <b>FIEE</b> al registrarte.</div>
+      <div id="important-warning">⚠️ <b>¡Importante!</b> El bono <b>no se acreditará</b> si no ingresas el código <b>FIEE</b> durante tu registro.</div>
       <div style="margin-top:12px;opacity:.89;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
+      <div style="margin-top:14px;font-size:0.96em;opacity:0.82;">Oferta segura de socios autorizados.</div>
     </div>
   </div>
 <script>
