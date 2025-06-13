@@ -197,7 +197,13 @@
   <div class="overlay" aria-hidden="true"></div>
   <div id="game" aria-label="Juego Plinko">
     <h1>Juega Plinko y Gana un Bono</h1>
-    <div id="counter" aria-live="polite">Bolas restantes: <span id="balls">10</span></div>
+    <div id="counter" aria-live="polite">
+  Bolas restantes: <span id="balls">10</span>
+  <span id="max-balls-tip" style="font-size:0.92em;color:#FFD24E;text-shadow:0 1px 6px #222;font-weight:normal;margin-left:8px;">
+    (máx. <b>5</b> al mismo tiempo)
+  </span>
+</div>
+
     <div id="score"><b>¡Tu bono te está esperando!</b></div>
     <div class="board-wrap">
       <div id="board-bg"></div>
