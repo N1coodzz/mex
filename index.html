@@ -143,14 +143,14 @@
       100% {transform: scale(1); opacity: 1;}
     }
     #promo {
-      font-size:1.20em;
+      font-size:1.22em;
       color:#222;
       background: linear-gradient(90deg, #FFD24E 60%, #14e177 90%);
       border-radius: 12px;
       display:inline-block;
       font-weight: bold;
       letter-spacing: 1.5px;
-      padding:6px 23px 6px 23px;
+      padding:7px 24px 7px 24px;
       margin-bottom: 11px;
       box-shadow: 0 2px 8px #ffd24e99;
       margin-top:0;
@@ -161,17 +161,35 @@
       background:#19BE6B;color:#fff;font-weight:bold;
       box-shadow:0 0 15px #ffd24e;
       cursor:pointer;transition:background 0.18s;
-      margin-bottom:4vw;
+      margin-bottom:3vw;
       letter-spacing: 1px;
     }
     #collect-btn:active { background: #007d36;}
+    #important-warning {
+      margin-top: 5px;
+      background: #fffbe3;
+      color: #d14e00;
+      font-weight: bold;
+      font-size: 1em;
+      border-radius: 11px;
+      padding: 10px 7px 10px 7px;
+      box-shadow: 0 0 8px #ffd24e7a;
+      display: block;
+      text-align: center;
+      border: 2px dashed #FFD24E;
+      letter-spacing: 0.2px;
+    }
+    #important-warning b {
+      color: #e04c00;
+      font-size: 1.09em;
+      font-weight: 900;
+    }
     #timer {font-size:1.07em;color:#ffd24e;font-weight:bold;margin:12px 0;}
     @media (max-width: 450px) {
       #game, .board-wrap { max-width:99vw; }
       #score {font-size:1.09em;}
       #tip {font-size:1.05em;}
     }
-    /* Accessibility */
     [tabindex]:focus, button:focus {outline:2px solid #19be6b;}
   </style>
 </head>
@@ -191,7 +209,7 @@
   <!-- Модалка с бонусом -->
   <div id="modal-bg" role="dialog" aria-modal="true" aria-label="Gana tu bono">
     <div id="modal-content">
-      <div id="promo">¡PROMOCODE: <b>MEX</b>!</div>
+      <div id="promo">¡PROMOCODE: <b>FIEE</b>!</div>
       <div style="font-size:1.18em;margin-bottom:13px;">
         ¡Tu ganancia está lista! <span style="color:#FFD24E;animation:flash 0.85s infinite alternate;">🎉</span>
       </div>
@@ -202,7 +220,8 @@
         <li><b>Expresa (5+ eventos):</b> bono extra a tu ganancia</li>
       </ul>
       <button id="collect-btn" aria-label="Reclamar bono">¡Reclamar bono!</button>
-      <div style="margin-top:13px;opacity:.89;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
+      <div id="important-warning">⚠️ <b>¡Importante!</b> El bono <b>NO se acreditará</b> si no ingresas el código <b>FIEE</b> al registrarte.</div>
+      <div style="margin-top:12px;opacity:.89;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
     </div>
   </div>
 <script>
