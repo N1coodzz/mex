@@ -2,14 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+  <meta name="viewport" content="width=350, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <title>¡Juega Plinko y Gana tu Bono!</title>
+  <meta name="description" content="¡Juega Plinko gratis y consigue tu bono exclusivo en México! Participa, gana y recoge tu premio especial para nuevos usuarios. Solo por tiempo limitado.">
+  <link rel="preload" as="image" href="preland-mx.webp" type="image/webp">
   <style>
+    html, body {height:100%;margin:0;padding:0;}
     body {
-      margin: 0; padding: 0;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
       color: #1d1d1d;
-      min-height: 100vh;
       box-sizing: border-box;
       padding-bottom: env(safe-area-inset-bottom, 0px);
       position: relative;
@@ -25,43 +27,39 @@
       background: rgba(255,255,255,0.22);
       backdrop-filter: blur(2.2px);
     }
+    #loader {
+      position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: 1100;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4em; font-weight: bold; color: #19be6b; letter-spacing: 1px;
+      transition: opacity .4s;
+    }
+    #loader.hide { opacity:0; pointer-events:none; }
     #game { 
-      max-width: 350px; 
-      margin: 0 auto; 
-      padding-top: 18px;
-      width: 96vw;
-      position: relative;
-      z-index: 3;
+      max-width: 350px; margin: 0 auto; padding-top: 16px;
+      width: 96vw; position: relative; z-index: 3;
     }
     #counter, #score, #tip {
-      color: #1d1d1d;
-      text-shadow: 0 2px 7px #fff, 0 0 2px #fff;
+      color: #1d1d1d; text-shadow: 0 2px 7px #fff, 0 0 2px #fff;
       font-weight: bold;
     }
     #counter {font-size:1.13em;margin-bottom:7px;}
     #score { font-size: 1.27em; margin-bottom: 10px; letter-spacing: 1px;}
     #tip {font-size: 1em; margin-top: 6px; opacity: 0.98;}
+    h1 {font-size:1.35em;margin:12px 0 2px 0;font-weight:bold;text-align:center;}
     .board-wrap {
       position:relative;
-      width: 100%;
-      height: 300px;
-      margin-bottom: 12px;
-      z-index: 3;
+      width: 100%; height: 300px;
+      margin-bottom: 12px; z-index: 3;
     }
     #board-bg {
       position: absolute; left: 0; top: 0; width: 100%; height: 100%;
       background: rgba(255,255,255,0.42);
-      border-radius: 22px;
-      z-index: 1;
-      pointer-events: none;
+      border-radius: 22px; z-index: 1; pointer-events: none;
       box-shadow: 0 3px 25px #fff7, 0 0 0 #fff;
     }
     #board { 
       position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-      background: transparent; 
-      overflow: hidden;
-      box-sizing: border-box;
-      z-index: 2;
+      background: transparent; overflow: hidden; box-sizing: border-box; z-index: 2;
     }
     .peg { 
       width: 8px; height: 8px; background: #17854c; border-radius: 50%; position: absolute;
@@ -72,15 +70,12 @@
       height: 20px; background: rgba(20,40,20,0.94);
       border-radius: 7px; position: absolute; bottom: 0; 
       text-align: center; line-height: 20px; font-weight: bold; font-size:0.95em;
-      color: #ffd24e; border: 2px solid #fff;
-      text-shadow: 0 0 8px #222;
+      color: #ffd24e; border: 2px solid #fff; text-shadow: 0 0 8px #222;
     }
     .ball { 
       width: 13px; height: 13px; background: #0bb25b; border-radius: 50%; 
-      position: absolute; 
-      border: 2.2px solid #fff;
-      box-shadow: 0 0 20px #19be6b, 0 0 6px #fff, 0 0 18px #fff3;
-      z-index: 10;
+      position: absolute; border: 2.2px solid #fff;
+      box-shadow: 0 0 20px #19be6b, 0 0 6px #fff, 0 0 18px #fff3; z-index: 10;
     }
     .trail { 
       position:absolute; border-radius:50%; pointer-events:none; opacity:0.13; z-index:2; 
@@ -95,8 +90,7 @@
       padding: 16px; border: none; border-radius: 18px;
       background: linear-gradient(90deg, #19be6b 0%, #FFD24E 100%);
       color: #222; font-weight: bold; box-shadow: 0 0 26px #ffd24e, 0 0 0 #fff;
-      position: relative;
-      transition: background .2s, box-shadow .2s, transform .13s;
+      position: relative; transition: background .2s, box-shadow .2s, transform .13s;
       animation: pulsebtn 1.4s infinite alternate;
       text-shadow: 0 0 2px #fff,0 0 6px #fff8;
     }
@@ -105,25 +99,15 @@
       0% {box-shadow: 0 0 16px #ffd24e, 0 0 0 #fff;}
       100% {box-shadow: 0 0 36px #19be6b, 0 0 10px #fff8;}
     }
-
     /* Модалка */
     #modal-bg {
-      display:none;
-      position: fixed; left:0; top:0; width:100vw; height:100vh; z-index:100;
+      display:none; position: fixed; left:0; top:0; width:100vw; height:100vh; z-index:100;
       background: rgba(0,0,0,0.63); justify-content: center; align-items: center;
     }
     #modal-content {
-      background:#17223b;
-      padding:22px 10px 16px 10px;
-      border-radius:18px;
-      box-shadow:0 0 48px #0008;
-      text-align:center;
-      color:#fff;
-      max-width:90vw;
-      margin:auto;
-      max-height:96vh;
-      overflow-y:auto;
-      font-size:1.13em;
+      background:#17223b; padding:22px 10px 16px 10px; border-radius:18px;
+      box-shadow:0 0 48px #0008; text-align:center; color:#fff;
+      max-width:90vw; margin:auto; max-height:96vh; overflow-y:auto; font-size:1.13em;
       animation:popin 0.33s cubic-bezier(.62,2.5,.42,.84);
     }
     @keyframes popin {
@@ -135,32 +119,44 @@
       margin-top:18px;padding:14px 0;border-radius:12px;border:none;
       width:100%;max-width:220px;font-size:1.07em;
       background:#19BE6B;color:#fff;font-weight:bold;
-      box-shadow:0 0 15px #ffd24e;
-      cursor:pointer;transition:background 0.19s;margin-bottom:6vw;
+      box-shadow:0 0 15px #ffd24e; cursor:pointer;transition:background 0.19s;margin-bottom:6vw;
     }
     #collect-btn:active { background: #007d36;}
     #timer {font-size:1.06em;color:#ffd24e;font-weight:bold;margin:12px 0;}
+    @media (max-width: 450px) {
+      #game, .board-wrap { max-width:99vw; }
+      #score {font-size:1.09em;}
+    }
+    @media (max-width:340px) {
+      #board-bg, #board {height:210px;}
+      .board-wrap {height:210px;}
+    }
+    /* Accessibility */
+    [tabindex]:focus, button:focus {outline:2px solid #19be6b;}
   </style>
 </head>
 <body>
-  <div id="main-bg"></div>
-  <div id="overlay"></div>
-
+  <div id="loader" aria-label="Cargando la página...">
+    <span role="img" aria-label="cargando">⏳</span>&nbsp;Cargando...
+  </div>
+  <div id="main-bg" aria-hidden="true"></div>
+  <div id="overlay" aria-hidden="true"></div>
   <div id="online"></div>
   <div id="today"></div>
-  <div id="chatbox"></div>
-  <div id="game">
-    <div id="counter">Bolas restantes: <span id="balls">10</span></div>
+  <div id="chatbox" aria-live="polite"></div>
+  <div id="game" aria-label="Juego Plinko">
+    <h1>Juega Plinko y Gana un Bono</h1>
+    <div id="counter" aria-live="polite">Bolas restantes: <span id="balls">10</span></div>
     <div id="score"><b>¡Tu bono te está esperando!</b></div>
     <div class="board-wrap">
       <div id="board-bg"></div>
-      <div id="board"></div>
+      <div id="board" aria-label="Tablero de juego"></div>
     </div>
-    <button id="start-btn">¡Lanzar la bola!</button>
+    <button id="start-btn" tabindex="0" aria-label="Lanzar la bola">¡Lanzar la bola!</button>
     <div id="tip">Presiona "¡Lanzar la bola!" para jugar</div>
   </div>
   <!-- Модалка с бонусом -->
-  <div id="modal-bg">
+  <div id="modal-bg" role="dialog" aria-modal="true" aria-label="Gana tu bono">
     <div id="modal-content">
       <div style="font-size:1.16em;margin-bottom:13px;">
         ¡Tu ganancia está lista! <span style="color:#ffd24e;animation:flash 0.85s infinite alternate;">🎉</span>
@@ -169,7 +165,7 @@
       <div style="margin-bottom:9px;">
         <b>¡Solo hoy!</b><br>Regístrate y reclama tu bono:
       </div>
-      <button id="collect-btn">¡Reclamar bono!</button>
+      <button id="collect-btn" aria-label="Reclamar bono">¡Reclamar bono!</button>
       <div style="margin-top:16px;opacity:.83;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
       <div id="faq-block" style="margin-top:16px;font-size:0.99em;">
         <h3 style="margin-bottom:4px;">Preguntas Frecuentes</h3>
@@ -182,7 +178,17 @@
     </div>
   </div>
 <script>
-  // --- chat & online ---
+  // LOADER
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      document.getElementById('loader').classList.add('hide');
+      setTimeout(function(){
+        document.getElementById('loader').style.display='none';
+      },350);
+    },350); // небольшая задержка для плавности
+  });
+
+  // CHAT & ONLINE
   const demoNames = ["Juan","Sofía","Carlos","María","Luis","Ana","Miguel","Fernanda","Javier","Valeria","José","Paola"];
   const demoPrizes = [50,75,120,85,30,60,105,200,40,35,80,90,150,180];
   function randArr(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
@@ -211,7 +217,7 @@
   }
   startChat();
 
-  // --- Board/Plinko ---
+  // Plinko Board
   const pegRows = 8;
   const pegCols = 9;
   const slots = [13,3,1.3,0.7,0.4,0.7,1.3,3,13];
@@ -232,6 +238,7 @@
         let top = row*31+14;
         peg.style.left = left + 'px';
         peg.style.top = top + 'px';
+        peg.setAttribute('aria-hidden','true');
         board.appendChild(peg);
         pegsArr.push({x: left+4, y: top+4});
       }
@@ -242,6 +249,7 @@
       let slotLeft = (boardW/pegCols)*i;
       slot.style.left = slotLeft + 'px';
       slot.innerText = slots[i];
+      slot.setAttribute('aria-label', `Casilla ${i+1}, multiplicador ${slots[i]}`);
       board.appendChild(slot);
     }
   }
@@ -262,6 +270,7 @@
     ball.className = 'ball';
     ball.style.left = x+'px';
     ball.style.top = y+'px';
+    ball.setAttribute('aria-label', 'bola');
     board.appendChild(ball);
 
     function drawTrail(px, py) {
@@ -323,10 +332,7 @@
             document.getElementById('balls').innerText = ballsLeft;
             ball.remove();
             ballsActive--;
-            // --- Показываем модалку с бонусом! ---
-            if (ballsLeft == 0 && ballsActive == 0) {
-              showModal();
-            }
+            if (ballsLeft == 0 && ballsActive == 0) showModal();
             if (ballsActive < maxSimultaneousBalls && ballsLeft > 0) {
               document.getElementById('start-btn').disabled = false;
             }
@@ -371,6 +377,21 @@
   document.getElementById('collect-btn').onclick = function() {
     window.location.href = OFFER_URL;
   };
+
+  // --- Автоматический ресет игры после сбора бонуса ---
+  document.getElementById('modal-bg').addEventListener('click', function(e){
+    if(e.target === this){
+      this.style.display='none';
+      resetGame();
+    }
+  });
+  function resetGame(){
+    ballsLeft = 10;
+    ballsActive = 0;
+    document.getElementById('balls').innerText = ballsLeft;
+    document.getElementById('start-btn').disabled = false;
+    drawPegs();
+  }
 </script>
 </body>
 </html>
