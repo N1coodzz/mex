@@ -4,70 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=350, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <title>¡Juega Plinko y Gana tu Bono!</title>
-  <meta name="description" content="¡Juega Plinko gratis y consigue tu bono exclusivo en México! Participa, gana y recoge tu premio especial para nuevos usuarios. Solo por tiempo limitado.">
+  <meta name="description" content="¡Juega Plinko gratis y consigue tu bono exclusivo en México! Participa, gana y recoge tu premio especial para nuevos usuarios.">
   <link rel="preload" as="image" href="preland-mx.webp" type="image/webp">
   <style>
     html, body {height:100%;margin:0;padding:0;}
     body {
       min-height: 100vh;
       font-family: Arial, sans-serif;
-      color: #1d1d1d;
+      color: #fff;
+      background: url('preland-mx.webp') no-repeat top center fixed;
+      background-size: cover;
       box-sizing: border-box;
       padding-bottom: env(safe-area-inset-bottom, 0px);
-      position: relative;
       overflow-x: hidden;
     }
-    #main-bg {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
-      background: url('preland-mx.webp') no-repeat top center;
-      background-size: cover;
-    }
-    #overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-      background: rgba(255,255,255,0.22);
-      backdrop-filter: blur(2.2px);
-    }
-    #loader {
-      position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; z-index: 1100;
-      background: #fff; display: flex; align-items: center; justify-content: center;
-      font-size: 1.4em; font-weight: bold; color: #19be6b; letter-spacing: 1px;
-      transition: opacity .4s;
-    }
-    #loader.hide { opacity:0; pointer-events:none; }
-
-    #online, #today {
-      position: relative;
-      text-align: center;
-      font-size: 1.03em;
-      margin: 0 0 3px 0;
-      padding: 3px 0 0 0;
-      background: rgba(255,255,255,0.18);
-      border-radius: 10px;
-      box-shadow: 0 2px 10px #fff5;
-      width: 93vw;
-      max-width: 350px;
-      margin-left: auto; margin-right: auto;
-      color: #146d31;
-    }
-
-    #chatbox {
-      font-size:1em;background:#fff6; padding:3px 0 3px 0;overflow:hidden; height:32px;
-      width: 93vw; max-width: 350px; margin: 0 auto 6px auto;
-      border-radius: 10px; box-shadow: 0 2px 10px #fff5;
-      color:#146d31;
+    .overlay {
+      position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;
+      background: rgba(35,42,40,0.18);
+      backdrop-filter: blur(1.6px);
     }
     #game { 
-      max-width: 350px; margin: 0 auto; padding-top: 13px;
-      width: 96vw; position: relative; z-index: 3;
+      max-width: 355px; 
+      margin: 0 auto; 
+      padding-top: 13px;
+      width: 98vw;
+      position: relative;
+      z-index: 3;
     }
-    h1 {font-size:1.32em;margin:11px 0 2px 0;font-weight:bold;text-align:center; color:#168b39;}
-    #counter, #score, #tip {
-      color: #168b39; text-shadow: 0 2px 7px #fff, 0 0 2px #fff;
-      font-weight: bold;
+    h1 {
+      font-size:1.3em;
+      margin:10px 0 2px 0;
+      font-weight:900;
+      text-align:center;
+      color:#fff;
+      text-shadow: 0 0 8px #222, 0 2px 12px #168b39, 0 0 2px #000;
+      letter-spacing: 1px;
     }
-    #counter {font-size:1.13em;margin-bottom:7px;}
-    #score { font-size: 1.21em; margin-bottom: 10px; letter-spacing: 1px;}
-    #tip {font-size: 1em; margin-top: 6px; opacity: 0.98;}
+    #counter, #score {
+      color: #fff; font-weight: bold;
+      text-shadow: 0 0 6px #2e301e, 0 2px 14px #222, 0 0 2px #000;
+      font-size: 1.18em;
+      margin-bottom: 8px;
+    }
+    #counter {font-size: 1.13em; margin-bottom: 8px;}
+    #score { font-size: 1.19em; margin-bottom: 10px; letter-spacing: 1px;}
     .board-wrap {
       position:relative;
       width: 100%; height: 300px;
@@ -75,7 +55,7 @@
     }
     #board-bg {
       position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-      background: rgba(255,255,255,0.42);
+      background: rgba(255,255,255,0.35);
       border-radius: 22px; z-index: 1; pointer-events: none;
       box-shadow: 0 3px 25px #fff7, 0 0 0 #fff;
     }
@@ -84,7 +64,7 @@
       background: transparent; overflow: hidden; box-sizing: border-box; z-index: 2;
     }
     .peg { 
-      width: 8px; height: 8px; background: #17854c; border-radius: 50%; position: absolute;
+      width: 8px; height: 8px; background: #168b39; border-radius: 50%; position: absolute;
       box-shadow: 0 0 7px #fff, 0 0 3px #000;
     }
     .slot { 
@@ -92,9 +72,9 @@
       height: 20px;
       background: rgba(20,40,20,0.94);
       border-radius: 7px; position: absolute; bottom: 0; 
-      text-align: center; line-height: 20px; font-weight: bold; font-size:0.95em;
-      color: #ffd24e; border: 2px solid #fff; text-shadow: 0 0 8px #222;
-      transition: background 0.25s, color 0.15s;
+      text-align: center; line-height: 20px; font-weight: bold; font-size:0.99em;
+      color: #ffd24e; border: 2px solid #fff; text-shadow: 0 0 8px #222, 0 0 2px #000;
+      transition: background 0.24s, color 0.13s;
       z-index: 2;
     }
     .slot.flash { animation: slotFlash .45s linear; }
@@ -104,7 +84,6 @@
     .slot.orange { background: linear-gradient(90deg,#FFA500,#FFD24E 90%); color: #333; border-color: #FFA500;}
     .slot.bright-orange { background: linear-gradient(90deg,#FFD24E,#FFA500 70%); color: #222; border-color: #FFD24E;}
     .slot.dark-orange { background: linear-gradient(90deg,#C36A2D,#FFA500 80%); color: #fff; border-color: #C36A2D;}
-
     .ball { 
       width: 13px; height: 13px; background: #0bb25b; border-radius: 50%; 
       position: absolute; border: 2.2px solid #fff;
@@ -115,34 +94,47 @@
       background: radial-gradient(circle, #FFD24E 14%, #19BE6B 32%, transparent 90%);
     }
     #start-btn {
-      width: 94%; margin: 18px auto 10px auto; display: block; font-size: 1.23em;
-      padding: 18px 0; border: 3px solid #fff;
-      border-radius: 22px;
-      background: linear-gradient(90deg, #34e276 0%, #FFD24E 100%);
+      width: 96%; margin: 15px auto 0 auto; display: block; font-size: 1.23em;
+      padding: 19px 0; border: 4px solid #fff;
+      border-radius: 26px;
+      background: linear-gradient(90deg, #1cd651 0%, #FFD24E 100%);
       color: #03591a; font-weight: bold;
-      box-shadow: 0 0 32px #ffd24e, 0 0 0 #fff;
-      text-shadow: 0 0 4px #fff9,0 0 8px #fff7;
+      box-shadow: 0 0 32px #ffd24e, 0 0 12px #3cd4a3;
+      text-shadow: 0 0 7px #fff9,0 0 8px #fff7, 0 0 2px #000;
       position: relative; cursor:pointer;
-      transition: background .16s, box-shadow .18s, transform .12s;
-      animation: pulsebtn 1.4s infinite alternate;
+      transition: background .15s, box-shadow .16s, transform .09s;
+      animation: pulsebtn 1.2s infinite alternate;
       outline: none;
       z-index: 5;
     }
-    #start-btn:active { background: #ffbc00; color: #fff; box-shadow: 0 0 36px #fff3; transform: scale(1.07);}
+    #start-btn:active { background: #ffd24e; color: #107d31; box-shadow: 0 0 42px #fff6; transform: scale(1.08);}
     @keyframes pulsebtn {
-      0% {box-shadow: 0 0 16px #ffd24e, 0 0 0 #fff;}
-      100% {box-shadow: 0 0 40px #19be6b, 0 0 20px #fff6;}
+      0% {box-shadow: 0 0 12px #ffd24e, 0 0 0 #fff;}
+      100% {box-shadow: 0 0 36px #19be6b, 0 0 20px #fff6;}
     }
-
-    /* Модалка */
+    #tip {
+      margin: 18px auto 0 auto;
+      background: rgba(255,255,255,0.91);
+      color: #1b522e;
+      font-size: 1.09em;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px #fff4, 0 0 1px #168b39;
+      padding: 10px 9px 8px 9px;
+      width: 90%;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 0.2px;
+      text-shadow: 0 2px 8px #fff,0 0 1px #fff;
+    }
+    /* Modal styles */
     #modal-bg {
       display:none; position: fixed; left:0; top:0; width:100vw; height:100vh; z-index:100;
       background: rgba(0,0,0,0.63); justify-content: center; align-items: center;
     }
     #modal-content {
-      background:#17223b; padding:22px 10px 16px 10px; border-radius:18px;
+      background:#17223b; padding:24px 10px 18px 10px; border-radius:18px;
       box-shadow:0 0 48px #0008; text-align:center; color:#fff;
-      max-width:90vw; margin:auto; max-height:96vh; overflow-y:auto; font-size:1.13em;
+      max-width:94vw; margin:auto; max-height:97vh; overflow-y:auto; font-size:1.15em;
       animation:popin 0.33s cubic-bezier(.62,2.5,.42,.84);
     }
     @keyframes popin {
@@ -150,32 +142,41 @@
       70% {transform: scale(1.05);}
       100% {transform: scale(1); opacity: 1;}
     }
-    #promo {font-size:1.15em; color:#FFD24E;background:#168b39;padding:5px 14px;border-radius:13px;display:inline-block;margin-bottom:11px;font-weight:bold;letter-spacing:1px;}
+    #promo {
+      font-size:1.20em;
+      color:#222;
+      background: linear-gradient(90deg, #FFD24E 60%, #14e177 90%);
+      border-radius: 12px;
+      display:inline-block;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      padding:6px 23px 6px 23px;
+      margin-bottom: 11px;
+      box-shadow: 0 2px 8px #ffd24e99;
+      margin-top:0;
+    }
     #collect-btn {
-      margin-top:18px;padding:14px 0;border-radius:12px;border:none;
-      width:100%;max-width:220px;font-size:1.07em;
+      margin-top:14px;padding:17px 0;border-radius:15px;border:none;
+      width:96%;max-width:220px;font-size:1.17em;
       background:#19BE6B;color:#fff;font-weight:bold;
-      box-shadow:0 0 15px #ffd24e; cursor:pointer;transition:background 0.19s;margin-bottom:6vw;
+      box-shadow:0 0 15px #ffd24e;
+      cursor:pointer;transition:background 0.18s;
+      margin-bottom:4vw;
+      letter-spacing: 1px;
     }
     #collect-btn:active { background: #007d36;}
-    #timer {font-size:1.06em;color:#ffd24e;font-weight:bold;margin:12px 0;}
+    #timer {font-size:1.07em;color:#ffd24e;font-weight:bold;margin:12px 0;}
     @media (max-width: 450px) {
-      #game, .board-wrap, #online, #today, #chatbox { max-width:99vw; }
+      #game, .board-wrap { max-width:99vw; }
       #score {font-size:1.09em;}
+      #tip {font-size:1.05em;}
     }
     /* Accessibility */
     [tabindex]:focus, button:focus {outline:2px solid #19be6b;}
   </style>
 </head>
 <body>
-  <div id="loader" aria-label="Cargando la página...">
-    <span role="img" aria-label="cargando">⏳</span>&nbsp;Cargando...
-  </div>
-  <div id="main-bg" aria-hidden="true"></div>
-  <div id="overlay" aria-hidden="true"></div>
-  <div id="online"></div>
-  <div id="today"></div>
-  <div id="chatbox" aria-live="polite"></div>
+  <div class="overlay" aria-hidden="true"></div>
   <div id="game" aria-label="Juego Plinko">
     <h1>Juega Plinko y Gana un Bono</h1>
     <div id="counter" aria-live="polite">Bolas restantes: <span id="balls">10</span></div>
@@ -191,70 +192,20 @@
   <div id="modal-bg" role="dialog" aria-modal="true" aria-label="Gana tu bono">
     <div id="modal-content">
       <div id="promo">¡PROMOCODE: <b>MEX</b>!</div>
-      <div style="font-size:1.16em;margin-bottom:13px;">
-        ¡Tu ganancia está lista! <span style="color:#ffd24e;animation:flash 0.85s infinite alternate;">🎉</span>
+      <div style="font-size:1.18em;margin-bottom:13px;">
+        ¡Tu ganancia está lista! <span style="color:#FFD24E;animation:flash 0.85s infinite alternate;">🎉</span>
       </div>
-      <div id="timer" style="font-size:1.06em;color:#ffd24e;font-weight:bold;margin:12px 0;"></div>
-      <div style="margin-bottom:9px;">
-        <b>¡Solo hoy!</b><br>Regístrate y reclama tu bono:
-      </div>
-      <ul style="padding-left:17px;text-align:left;margin:12px auto 12px auto;max-width:320px;">
+      <div id="timer"></div>
+      <ul style="padding-left:18px;text-align:left;margin:12px auto 10px auto;max-width:320px;">
         <li><b>+500% bono</b> en tus primeros 4 depósitos</li>
         <li><b>Hasta 30% cashback</b></li>
         <li><b>Expresa (5+ eventos):</b> bono extra a tu ganancia</li>
       </ul>
       <button id="collect-btn" aria-label="Reclamar bono">¡Reclamar bono!</button>
-      <div style="margin-top:14px;opacity:.87;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
-      <div id="faq-block" style="margin-top:12px;font-size:0.99em;">
-        <h3 style="margin-bottom:4px;">Preguntas Frecuentes</h3>
-        <ul style="padding-left:18px;text-align:left;">
-          <li>Bono se acredita tras registro</li>
-          <li>Solo para nuevos usuarios</li>
-          <li>Oferta de socios licenciados</li>
-        </ul>
-      </div>
+      <div style="margin-top:13px;opacity:.89;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
     </div>
   </div>
 <script>
-  // LOADER
-  window.addEventListener('load',function(){
-    setTimeout(function(){
-      document.getElementById('loader').classList.add('hide');
-      setTimeout(function(){
-        document.getElementById('loader').style.display='none';
-      },350);
-    },350);
-  });
-
-  // CHAT & ONLINE
-  const demoNames = ["Juan","Sofía","Carlos","María","Luis","Ana","Miguel","Fernanda","Javier","Valeria","José","Paola"];
-  const demoPrizes = [50,75,120,85,30,60,105,200,40,35,80,90,150,180];
-  function randArr(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-  function randomWinMsg(){ 
-    let name = randArr(demoNames), prize = randArr(demoPrizes);
-    return `<b>${name}</b> <span style="color:#ffd24e;">$${prize} MXN</span> ganó un bono!`;
-  }
-  function setOnline() {
-    let online = Math.floor(Math.random()*401)+150;
-    let today = Math.floor(Math.random()*4501)+1500;
-    document.getElementById('online').innerHTML = `<b>En línea ahora:</b> ${online} usuarios`;
-    document.getElementById('today').innerHTML = `<b>Visitantes hoy:</b> ${today}`;
-  }
-  setOnline();
-  function startChat() {
-    const chat = document.getElementById('chatbox');
-    function addMsg() {
-      let div = document.createElement('div');
-      div.className = 'chatmsg';
-      div.innerHTML = randomWinMsg();
-      chat.appendChild(div);
-      if(chat.childNodes.length>3) chat.removeChild(chat.childNodes[0]);
-    }
-    addMsg();
-    setInterval(addMsg, 2800 + Math.random()*2000);
-  }
-  startChat();
-
   // Plinko Board
   const pegRows = 8;
   const pegCols = 9;
@@ -321,7 +272,6 @@
     ball.className = 'ball';
     ball.style.left = x+'px';
     ball.style.top = y+'px';
-    ball.setAttribute('aria-label', 'bola');
     board.appendChild(ball);
 
     function drawTrail(px, py) {
@@ -419,7 +369,7 @@
     timerSec = 300;
     function updateTimer(){
       let min = Math.floor(timerSec/60), sec = timerSec%60;
-      document.getElementById('timer').innerHTML = `<b>Tiempo restante:</b> <span style="color:#ffd24e;">${min}:${sec<10?'0'+sec:sec}</span>`;
+      document.getElementById('timer').innerHTML = `<b>Tiempo restante:</b> <span style="color:#FFD24E;">${min}:${sec<10?'0'+sec:sec}</span>`;
       if(timerSec<=0){
         clearInterval(timerInt);
         document.getElementById('timer').innerHTML = "<span style='color:#ff3b5b'>La oferta ha expirado.</span>";
