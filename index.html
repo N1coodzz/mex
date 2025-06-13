@@ -34,18 +34,40 @@
       transition: opacity .4s;
     }
     #loader.hide { opacity:0; pointer-events:none; }
+
+    #online, #today {
+      position: relative;
+      text-align: center;
+      font-size: 1.03em;
+      margin: 0 0 3px 0;
+      padding: 3px 0 0 0;
+      background: rgba(255,255,255,0.18);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px #fff5;
+      width: 93vw;
+      max-width: 350px;
+      margin-left: auto; margin-right: auto;
+      color: #146d31;
+    }
+
+    #chatbox {
+      font-size:1em;background:#fff6; padding:3px 0 3px 0;overflow:hidden; height:32px;
+      width: 93vw; max-width: 350px; margin: 0 auto 6px auto;
+      border-radius: 10px; box-shadow: 0 2px 10px #fff5;
+      color:#146d31;
+    }
     #game { 
-      max-width: 350px; margin: 0 auto; padding-top: 16px;
+      max-width: 350px; margin: 0 auto; padding-top: 13px;
       width: 96vw; position: relative; z-index: 3;
     }
+    h1 {font-size:1.32em;margin:11px 0 2px 0;font-weight:bold;text-align:center; color:#168b39;}
     #counter, #score, #tip {
-      color: #1d1d1d; text-shadow: 0 2px 7px #fff, 0 0 2px #fff;
+      color: #168b39; text-shadow: 0 2px 7px #fff, 0 0 2px #fff;
       font-weight: bold;
     }
     #counter {font-size:1.13em;margin-bottom:7px;}
-    #score { font-size: 1.27em; margin-bottom: 10px; letter-spacing: 1px;}
+    #score { font-size: 1.21em; margin-bottom: 10px; letter-spacing: 1px;}
     #tip {font-size: 1em; margin-top: 6px; opacity: 0.98;}
-    h1 {font-size:1.35em;margin:12px 0 2px 0;font-weight:bold;text-align:center;}
     .board-wrap {
       position:relative;
       width: 100%; height: 300px;
@@ -67,11 +89,22 @@
     }
     .slot { 
       width: calc((100% / 9) - 3px); min-width: 18px; max-width: 32px;
-      height: 20px; background: rgba(20,40,20,0.94);
+      height: 20px;
+      background: rgba(20,40,20,0.94);
       border-radius: 7px; position: absolute; bottom: 0; 
       text-align: center; line-height: 20px; font-weight: bold; font-size:0.95em;
       color: #ffd24e; border: 2px solid #fff; text-shadow: 0 0 8px #222;
+      transition: background 0.25s, color 0.15s;
+      z-index: 2;
     }
+    .slot.flash { animation: slotFlash .45s linear; }
+    @keyframes slotFlash { 0%{box-shadow:0 0 10px #fff;} 100%{box-shadow:none;} }
+    .slot.green { background: linear-gradient(90deg,#33ce7c,#16e157 70%); color: #fff; border-color: #33ce7c;}
+    .slot.red { background: linear-gradient(90deg,#c32828,#f94b4b 70%); color: #fff; border-color: #c32828;}
+    .slot.orange { background: linear-gradient(90deg,#FFA500,#FFD24E 90%); color: #333; border-color: #FFA500;}
+    .slot.bright-orange { background: linear-gradient(90deg,#FFD24E,#FFA500 70%); color: #222; border-color: #FFD24E;}
+    .slot.dark-orange { background: linear-gradient(90deg,#C36A2D,#FFA500 80%); color: #fff; border-color: #C36A2D;}
+
     .ball { 
       width: 13px; height: 13px; background: #0bb25b; border-radius: 50%; 
       position: absolute; border: 2.2px solid #fff;
@@ -81,24 +114,26 @@
       position:absolute; border-radius:50%; pointer-events:none; opacity:0.13; z-index:2; 
       background: radial-gradient(circle, #FFD24E 14%, #19BE6B 32%, transparent 90%);
     }
-    #chatbox {font-size:1em;background:#112d48cc;padding:5px 0 3px 0;overflow:hidden; height:32px;}
-    #online {padding:5px 0 2px 0;text-align:center;background:#1e314c88;font-size:0.99em;}
-    #today {padding-bottom:6px;text-align:center;font-size:0.94em;opacity:.86;}
-
     #start-btn {
-      width: 92%; margin: 22px auto 10px auto; display: block; font-size: 1.19em;
-      padding: 16px; border: none; border-radius: 18px;
-      background: linear-gradient(90deg, #19be6b 0%, #FFD24E 100%);
-      color: #222; font-weight: bold; box-shadow: 0 0 26px #ffd24e, 0 0 0 #fff;
-      position: relative; transition: background .2s, box-shadow .2s, transform .13s;
+      width: 94%; margin: 18px auto 10px auto; display: block; font-size: 1.23em;
+      padding: 18px 0; border: 3px solid #fff;
+      border-radius: 22px;
+      background: linear-gradient(90deg, #34e276 0%, #FFD24E 100%);
+      color: #03591a; font-weight: bold;
+      box-shadow: 0 0 32px #ffd24e, 0 0 0 #fff;
+      text-shadow: 0 0 4px #fff9,0 0 8px #fff7;
+      position: relative; cursor:pointer;
+      transition: background .16s, box-shadow .18s, transform .12s;
       animation: pulsebtn 1.4s infinite alternate;
-      text-shadow: 0 0 2px #fff,0 0 6px #fff8;
+      outline: none;
+      z-index: 5;
     }
-    #start-btn:active { background: #ffbc00; color: #fff; box-shadow: 0 0 33px #fff2; transform: scale(0.98);}
+    #start-btn:active { background: #ffbc00; color: #fff; box-shadow: 0 0 36px #fff3; transform: scale(1.07);}
     @keyframes pulsebtn {
       0% {box-shadow: 0 0 16px #ffd24e, 0 0 0 #fff;}
-      100% {box-shadow: 0 0 36px #19be6b, 0 0 10px #fff8;}
+      100% {box-shadow: 0 0 40px #19be6b, 0 0 20px #fff6;}
     }
+
     /* Модалка */
     #modal-bg {
       display:none; position: fixed; left:0; top:0; width:100vw; height:100vh; z-index:100;
@@ -115,6 +150,7 @@
       70% {transform: scale(1.05);}
       100% {transform: scale(1); opacity: 1;}
     }
+    #promo {font-size:1.15em; color:#FFD24E;background:#168b39;padding:5px 14px;border-radius:13px;display:inline-block;margin-bottom:11px;font-weight:bold;letter-spacing:1px;}
     #collect-btn {
       margin-top:18px;padding:14px 0;border-radius:12px;border:none;
       width:100%;max-width:220px;font-size:1.07em;
@@ -124,12 +160,8 @@
     #collect-btn:active { background: #007d36;}
     #timer {font-size:1.06em;color:#ffd24e;font-weight:bold;margin:12px 0;}
     @media (max-width: 450px) {
-      #game, .board-wrap { max-width:99vw; }
+      #game, .board-wrap, #online, #today, #chatbox { max-width:99vw; }
       #score {font-size:1.09em;}
-    }
-    @media (max-width:340px) {
-      #board-bg, #board {height:210px;}
-      .board-wrap {height:210px;}
     }
     /* Accessibility */
     [tabindex]:focus, button:focus {outline:2px solid #19be6b;}
@@ -158,6 +190,7 @@
   <!-- Модалка с бонусом -->
   <div id="modal-bg" role="dialog" aria-modal="true" aria-label="Gana tu bono">
     <div id="modal-content">
+      <div id="promo">¡PROMOCODE: <b>MEX</b>!</div>
       <div style="font-size:1.16em;margin-bottom:13px;">
         ¡Tu ganancia está lista! <span style="color:#ffd24e;animation:flash 0.85s infinite alternate;">🎉</span>
       </div>
@@ -165,14 +198,19 @@
       <div style="margin-bottom:9px;">
         <b>¡Solo hoy!</b><br>Regístrate y reclama tu bono:
       </div>
+      <ul style="padding-left:17px;text-align:left;margin:12px auto 12px auto;max-width:320px;">
+        <li><b>+500% bono</b> en tus primeros 4 depósitos</li>
+        <li><b>Hasta 30% cashback</b></li>
+        <li><b>Expresa (5+ eventos):</b> bono extra a tu ganancia</li>
+      </ul>
       <button id="collect-btn" aria-label="Reclamar bono">¡Reclamar bono!</button>
-      <div style="margin-top:16px;opacity:.83;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
-      <div id="faq-block" style="margin-top:16px;font-size:0.99em;">
+      <div style="margin-top:14px;opacity:.87;"><small>¡No dejes pasar esta oportunidad! La oferta expirará en unos minutos.</small></div>
+      <div id="faq-block" style="margin-top:12px;font-size:0.99em;">
         <h3 style="margin-bottom:4px;">Preguntas Frecuentes</h3>
         <ul style="padding-left:18px;text-align:left;">
-          <li>Recibe tu bono automáticamente después de registrarte.</li>
-          <li>Solo para nuevos usuarios.</li>
-          <li>Oferta segura de socios licenciados.</li>
+          <li>Bono se acredita tras registro</li>
+          <li>Solo para nuevos usuarios</li>
+          <li>Oferta de socios licenciados</li>
         </ul>
       </div>
     </div>
@@ -185,7 +223,7 @@
       setTimeout(function(){
         document.getElementById('loader').style.display='none';
       },350);
-    },350); // небольшая задержка для плавности
+    },350);
   });
 
   // CHAT & ONLINE
@@ -225,6 +263,7 @@
   const maxSimultaneousBalls = 5;
   const board = document.getElementById('board');
   let pegsArr = [];
+  let lastSlotEl = null;
 
   function drawPegs() {
     board.innerHTML = '';
@@ -256,9 +295,21 @@
   window.addEventListener('DOMContentLoaded', drawPegs);
   window.addEventListener('resize', drawPegs);
 
+  function getSlotClass(val) {
+    if (val == 13) return 'green';
+    if (val == 0.4) return 'red';
+    if (val == 3) return 'orange';
+    if (val == 1.3) return 'dark-orange';
+    if (val == 0.7) return 'bright-orange';
+    return '';
+  }
+
   function launchBall() {
     if (ballsLeft <= 0 || ballsActive >= maxSimultaneousBalls) return;
     ballsActive++;
+    ballsLeft--;
+    if (ballsLeft < 0) ballsLeft = 0;
+    document.getElementById('balls').innerText = ballsLeft;
     let boardW = board.clientWidth || 280;
     let radius = 6.5;
     let x = boardW/2 - radius + (Math.random()-0.5)*5;
@@ -327,11 +378,18 @@
           ball.style.left = slotCenterX+'px';
           ball.style.top = '266px';
           setTimeout(()=>{
-            ballsLeft--;
-            if (ballsLeft < 0) ballsLeft = 0;
-            document.getElementById('balls').innerText = ballsLeft;
             ball.remove();
             ballsActive--;
+            // Заливка ячейки
+            let slotEls = board.querySelectorAll('.slot');
+            if (lastSlotEl) lastSlotEl.className = 'slot';
+            let curSlot = slotEls[slotNum];
+            let cl = getSlotClass(slots[slotNum]);
+            curSlot.classList.add('flash');
+            if (cl) curSlot.classList.add(cl);
+            lastSlotEl = curSlot;
+            setTimeout(()=>{curSlot.classList.remove('flash');},400);
+
             if (ballsLeft == 0 && ballsActive == 0) showModal();
             if (ballsActive < maxSimultaneousBalls && ballsLeft > 0) {
               document.getElementById('start-btn').disabled = false;
